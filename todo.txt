@@ -1,0 +1,10 @@
+x 2026-05-16 find a better way to lex variables
+
+x 2026-05-16 properly lex _{}{}
+
+2026-05-17 handle basic arithmetic solving first such as finding zeros and y-int's for polynomials and rational functions
+
+2026-05-17 maybe add an arena allocator (not needed for small math expressions)
+
+2026-05-19 in parser, make sure to handle variables being multiplied together without ooperator symbol. ex: 2x or xy or dx
+
