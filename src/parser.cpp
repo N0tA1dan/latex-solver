@@ -50,16 +50,22 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor(){
       // handles multiplication 
       case TokenType::ASTERISK: case TokenType::CDOT:
         {
-
           eat(); // eat the symbol
           auto rhs = ParsePrimaryExpression();
           auto rhsexpr = std::make_unique<ExpressionNode>();
           rhsexpr->var = std::move(rhs);
 
           auto opnode = std::make_unique<OpNode>();
+
           opnode->type = OpType::MULTIPLY;
+
           opnode->left = std::move(lhsexpr);
           opnode->right = std::move(rhsexpr);
+
+          auto newexpression = std::make_unique<ExpressionNode>();
+          newexpression->var = std::move(opnode);
+
+          lhsexpr = std::move(newexpression);
 
           break;
         }
@@ -93,21 +99,31 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor(){
 
   }
 
+  std::cout <<"done parsing factor"<<std::endl;
+  return lhsexpr;
+
 
 }
 
 std::unique_ptr<ExpressionNode> Parser::ParseTerm(){
+  auto lhs = ParseFactor();
+  return lhs;
 }
 
 std::unique_ptr<ExpressionNode> Parser::ParseExpression(){
+  auto expression = ParseTerm();
+
+  return expression;
+
 }
 
 void Parser::Parse(){
 
   auto expression = std::make_unique<ExpressionNode>();
 
-  for(const auto& token : m_tokens){
+  expression = ParseExpression();
 
-  }
+  m_expression = std::move(expression);
+
 
 }

@@ -155,6 +155,11 @@ void Lexer::printTokens(){
 
       case TokenType::CDOT:
         std::cout << "CDOT TOKEN" << std::endl;
+        break;
+
+      case TokenType::ASTERISK:
+        std::cout << "ASTERISK TOKEN" << std::endl;
+        break;
 
       case TokenType::OPEN_BRACE:
         std::cout << "OPEN_BRACE TOKEN" << std::endl;

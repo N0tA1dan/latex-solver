@@ -45,6 +45,8 @@ class Parser{
     size_t m_index = 0;
     std::vector<Token> m_tokens;
 
+    std::unique_ptr<ExpressionNode> m_expression;
+
     Token eat(){
       return m_tokens.at(m_index++);
     }
