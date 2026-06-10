@@ -100,8 +100,8 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor(){
           break;
         }
 
-      // handles cases like 2x
-      case TokenType::VARIABLE:
+      // handles cases like 2x or 2(expr)
+      case TokenType::VARIABLE: case TokenType::OPEN_PAREN:
         {
           auto rhs = ParsePrimaryExpression();
           auto rhsexpr = std::make_unique<ExpressionNode>();

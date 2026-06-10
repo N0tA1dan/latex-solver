@@ -8,6 +8,8 @@ x 2026-05-16 properly lex _{}{}
 
 2026-05-19 in parser, make sure to handle variables being multiplied together without ooperator symbol. ex: 2x or xy or dx
 
-2026-06-08 add tryeat function helper in parser to try to eat a token
+x 2026-06-08 add tryeat function helper in parser to try to eat a token
 
 2026-06-09 fix reused code in switch statements within parseTerm
+
+2026-06-09 add parse frac function or figure out how to properly parse it
