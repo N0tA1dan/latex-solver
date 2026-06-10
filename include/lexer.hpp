@@ -21,6 +21,8 @@ enum class TokenType{
   ASTERISK,
   OPEN_BRACE,
   CLOSE_BRACE,
+  OPEN_PAREN,
+  CLOSE_PAREN,
   UNDERSCORE,
   FORWARD_SLASH,
 };

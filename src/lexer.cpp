@@ -82,9 +82,22 @@ void Lexer::lex(){
           type = TokenType::CLOSE_BRACE;
           break;
 
+        case '(':
+          type = TokenType::OPEN_PAREN;
+          break;
+
+        case ')':
+          type = TokenType::CLOSE_PAREN;
+          break;
+
         case '_':
           type = TokenType::UNDERSCORE;
           break;
+
+        case '/':
+          type = TokenType::FORWARD_SLASH;
+          break;
+
 
         default:
           std::cerr << "error: unknown operator or symbol '" << peek().value() << std::endl;
@@ -167,6 +180,14 @@ void Lexer::printTokens(){
 
       case TokenType::CLOSE_BRACE:
         std::cout << "CLOSE_BRACE TOKEN" << std::endl;
+        break;
+
+      case TokenType::OPEN_PAREN:
+        std::cout << "OPEN_PAREN TOKEN" << std::endl;
+        break;
+
+      case TokenType::CLOSE_PAREN:
+        std::cout << "CLOSE_PAREN TOKEN" << std::endl;
         break;
 
       case TokenType::UNDERSCORE:

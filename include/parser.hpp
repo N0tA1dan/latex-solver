@@ -21,12 +21,12 @@ struct NumberLit{
   Token val;
 };
 
+struct ExpressionNode;
+
 struct PrimaryExpression{
-  std::variant<std::unique_ptr<VariableLit>, std::unique_ptr<NumberLit>> var;
+  std::variant<std::unique_ptr<VariableLit>, std::unique_ptr<NumberLit>, std::unique_ptr<ExpressionNode>> var;
 
 };
-
-struct ExpressionNode;
 
 struct OpNode{
   OpType type;
@@ -66,6 +66,8 @@ class Parser{
     Parser(const std::vector<Token>& tokens) : m_tokens(tokens) {}
 
     ~Parser() = default;
+
+    void TryEat(TokenType type);
 
 
     std::unique_ptr<PrimaryExpression> ParsePrimaryExpression();

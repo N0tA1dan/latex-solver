@@ -4,7 +4,7 @@
 int main(){
 
 
-    std::string source = "2 * 2";
+    std::string source = "(2+1) * 2";
 
     Lexer lexer(source);
 
