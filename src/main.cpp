@@ -1,18 +1,17 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 
-int main(){
+int main() {
 
+  std::string source = "xyz + 1 + 3 + 4";
 
-    std::string source = "(x*2)(2*x)";
+  Lexer lexer(source);
 
-    Lexer lexer(source);
+  lexer.lex();
+  lexer.printTokens();
 
-    lexer.lex();
-    lexer.printTokens();
+  std::vector<Token> tokens = lexer.getTokens();
 
-    std::vector<Token> tokens = lexer.getTokens();
-
-    Parser parser(tokens);
-    parser.Parse();
+  Parser parser(tokens);
+  parser.Parse();
 }
