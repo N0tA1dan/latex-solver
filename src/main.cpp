@@ -3,7 +3,7 @@
 
 int main() {
 
-  std::string source = "xyz + 1 + 3 + 4";
+  std::string source = "2(x+1)";
 
   Lexer lexer(source);
 

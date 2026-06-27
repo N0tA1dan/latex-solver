@@ -1,4 +1,6 @@
 #include "parser.hpp"
+#include "lexer.hpp"
+#include <memory>
 
 void Parser::TryEat(TokenType type) {
   if (peek().has_value() and peek().value().type == type)
@@ -9,8 +11,8 @@ void Parser::TryEat(TokenType type) {
   }
 }
 
-std::unique_ptr<PrimaryExpression> Parser::ParsePrimaryExpression() {
-  auto primary = std::make_unique<PrimaryExpression>();
+std::unique_ptr<ExpressionNode> Parser::ParsePrimaryExpression() {
+  auto primary = std::make_unique<ExpressionNode>();
 
   if (peek().has_value()) {
     switch (peek().value().type) {
@@ -33,22 +35,13 @@ std::unique_ptr<PrimaryExpression> Parser::ParsePrimaryExpression() {
 
     case TokenType::OPEN_PAREN: {
       eat(); // eat open parentheses;
-      auto expr = std::make_unique<ExpressionNode>();
-      expr = ParseExpression();
-      eat(); // eats closing parentheses
-      primary->var = std::move(expr);
-
+      auto expr = ParseExpression();
+      TryEat(TokenType::CLOSE_PAREN); // eats closing parentheses
+      primary = std::move(expr);
       break;
     }
 
-    case TokenType::OPEN_BRACE: {
-      eat(); // eat open brace
-      auto expr = std::make_unique<ExpressionNode>();
-      expr = ParseExpression();
-      eat(); // eats closing brace
-      primary->var = std::move(expr);
-
-      break;
+    case TokenType::FRAC: {
     }
 
     default: {
@@ -63,11 +56,8 @@ std::unique_ptr<PrimaryExpression> Parser::ParsePrimaryExpression() {
 }
 
 std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
-  auto lhsexpr = std::make_unique<ExpressionNode>();
 
-  auto lhs = ParsePrimaryExpression();
-
-  lhsexpr->var = std::move(lhs);
+  auto lhsexpr = ParsePrimaryExpression();
 
   while (peek().has_value()) {
     switch (peek().value().type) {
@@ -75,9 +65,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     case TokenType::ASTERISK:
     case TokenType::CDOT: {
       eat(); // eat the symbol
-      auto rhs = ParsePrimaryExpression();
-      auto rhsexpr = std::make_unique<ExpressionNode>();
-      rhsexpr->var = std::move(rhs);
+      auto rhsexpr = ParsePrimaryExpression();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -97,9 +85,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     // handles cases like 2x or 2(expr)
     case TokenType::VARIABLE:
     case TokenType::OPEN_PAREN: {
-      auto rhs = ParsePrimaryExpression();
-      auto rhsexpr = std::make_unique<ExpressionNode>();
-      rhsexpr->var = std::move(rhs);
+      auto rhsexpr = ParsePrimaryExpression();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -119,9 +105,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     // handles x/2
     case TokenType::FORWARD_SLASH: {
       eat(); // eat / symbol
-      auto rhs = ParsePrimaryExpression();
-      auto rhsexpr = std::make_unique<ExpressionNode>();
-      rhsexpr->var = std::move(rhs);
+      auto rhsexpr = ParsePrimaryExpression();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -138,7 +122,6 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
       break;
     }
 
-    //
     default: {
       return lhsexpr;
     }
@@ -149,27 +132,25 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
 }
 
 std::unique_ptr<ExpressionNode> Parser::ParseTerm() {
-  auto lhs = ParseFactor();
+  auto lhsexpr = ParseFactor();
 
   while (peek().has_value()) {
     switch (peek().value().type) {
     case TokenType::PLUS: {
       eat(); // eat the symbol
-      auto rhs = ParseFactor();
-      auto rhsexpr = std::make_unique<ExpressionNode>();
-      rhsexpr = std::move(rhs);
+      auto rhsexpr = ParseFactor();
 
       auto opnode = std::make_unique<OpNode>();
 
       opnode->type = OpType::ADD;
 
-      opnode->left = std::move(lhs);
+      opnode->left = std::move(lhsexpr);
       opnode->right = std::move(rhsexpr);
 
       auto newexpression = std::make_unique<ExpressionNode>();
       newexpression->var = std::move(opnode);
 
-      lhs = std::move(newexpression);
+      lhsexpr = std::move(newexpression);
 
       break;
     }
@@ -177,32 +158,30 @@ std::unique_ptr<ExpressionNode> Parser::ParseTerm() {
     case TokenType::MINUS: {
 
       eat(); // eat the symbol
-      auto rhs = ParseFactor();
-      auto rhsexpr = std::make_unique<ExpressionNode>();
-      rhsexpr = std::move(rhs);
+      auto rhsexpr = ParseFactor();
 
       auto opnode = std::make_unique<OpNode>();
 
       opnode->type = OpType::SUB;
 
-      opnode->left = std::move(lhs);
+      opnode->left = std::move(lhsexpr);
       opnode->right = std::move(rhsexpr);
 
       auto newexpression = std::make_unique<ExpressionNode>();
       newexpression->var = std::move(opnode);
 
-      lhs = std::move(newexpression);
+      lhsexpr = std::move(newexpression);
 
       break;
     }
 
     default: {
-      return lhs;
+      return lhsexpr;
     }
     }
   }
 
-  return lhs;
+  return lhsexpr;
 }
 
 std::unique_ptr<ExpressionNode> Parser::ParseExpression() {
