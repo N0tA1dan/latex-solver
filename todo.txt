@@ -17,3 +17,5 @@ x 2026-06-09 fix reused code in switch statements within parseTerm
 x 2026-06-23 fix parseTerm and make it a while loop instead of if statement
 
 x 2026-06-27 fix parser to just wrap everything in a expression node
+
+x 2026-06-28 rename parsePrimaryExpression to ParseAtomic

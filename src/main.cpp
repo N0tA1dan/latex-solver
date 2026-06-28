@@ -3,7 +3,7 @@
 
 int main() {
 
-  std::string source = "2(x+1)";
+  std::string source = "\\frac{1}{2}";
 
   Lexer lexer(source);
 

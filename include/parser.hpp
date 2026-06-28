@@ -61,7 +61,7 @@ public:
 
   void TryEat(TokenType type);
 
-  std::unique_ptr<ExpressionNode> ParsePrimaryExpression();
+  std::unique_ptr<ExpressionNode> ParseAtomic();
   std::unique_ptr<ExpressionNode> ParseFactor();
   std::unique_ptr<ExpressionNode> ParseTerm();
   std::unique_ptr<ExpressionNode> ParseExpression();
