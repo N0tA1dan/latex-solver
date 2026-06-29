@@ -18,10 +18,3 @@ Clone this repository then run the following:
 `mkdir  build && cd build`
 `cmake ..`
 
-then to run do 
-`./solver`
-```
-```
-```
-```
-```

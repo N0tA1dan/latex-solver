@@ -99,7 +99,8 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
 
     // handles cases like 2x or 2(expr)
     case TokenType::VARIABLE:
-    case TokenType::OPEN_PAREN: {
+    case TokenType::OPEN_PAREN:
+    case TokenType::FRAC: {
       auto rhsexpr = ParseAtomic();
 
       auto opnode = std::make_unique<OpNode>();

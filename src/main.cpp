@@ -1,14 +1,15 @@
 #include "lexer.hpp"
 #include "parser.hpp"
+#include <iostream>
 
 int main() {
 
-  std::string source = "\\frac{1}{2}";
+  std::string source = "2\\frac{1}{2}";
 
   Lexer lexer(source);
 
   lexer.lex();
-  lexer.printTokens();
+  // lexer.printTokens();
 
   std::vector<Token> tokens = lexer.getTokens();
 
