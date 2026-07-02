@@ -4,7 +4,7 @@
 
 int main() {
 
-  std::string source = "2\\frac{1}{2}";
+  std::string source = "2 \\frac{x}{y}";
 
   Lexer lexer(source);
 
