@@ -70,9 +70,31 @@ std::unique_ptr<ExpressionNode> Parser::ParseAtomic() {
   return atomic;
 }
 
+std::unique_ptr<ExpressionNode> Parser::ParsePower() {
+  auto lhsexpr = ParseAtomic();
+
+  if (peek().has_value() && peek().value().type == TokenType::CARET) {
+    eat(); // eats ^ token
+    auto rhsexpr = ParsePower();
+
+    auto opnode = std::make_unique<OpNode>();
+    opnode->type = OpType::POWER;
+
+    opnode->left = std::move(lhsexpr);
+    opnode->right = std::move(rhsexpr);
+
+    auto newexpression = std::make_unique<ExpressionNode>();
+    newexpression->var = std::move(opnode);
+
+    lhsexpr = std::move(newexpression);
+  }
+
+  return lhsexpr;
+}
+
 std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
 
-  auto lhsexpr = ParseAtomic();
+  auto lhsexpr = ParsePower();
 
   while (peek().has_value()) {
     switch (peek().value().type) {
@@ -80,7 +102,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     case TokenType::ASTERISK:
     case TokenType::CDOT: {
       eat(); // eat the symbol
-      auto rhsexpr = ParseAtomic();
+      auto rhsexpr = ParsePower();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -101,7 +123,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     case TokenType::VARIABLE:
     case TokenType::OPEN_PAREN:
     case TokenType::FRAC: {
-      auto rhsexpr = ParseAtomic();
+      auto rhsexpr = ParsePower();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -121,7 +143,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     // handles x/2
     case TokenType::FORWARD_SLASH: {
       eat(); // eat / symbol
-      auto rhsexpr = ParseAtomic();
+      auto rhsexpr = ParsePower();
 
       auto opnode = std::make_unique<OpNode>();
 

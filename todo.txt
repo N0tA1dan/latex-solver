@@ -20,6 +20,6 @@ x 2026-06-27 fix parser to just wrap everything in a expression node
 
 x 2026-06-28 rename parsePrimaryExpression to ParseAtomic
 
-2026-07-02 parse for exponents like x^2
+x 2026-07-02 parse for exponents like x^2
 
 2026-07-02 parse for negative expressions like -2 or -x

@@ -1,11 +1,11 @@
-#pragma once 
+#pragma once
 #include <iostream>
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-enum class TokenType{
+enum class TokenType {
   FRAC,
   INTEGRAL,
   LIMIT,
@@ -19,6 +19,7 @@ enum class TokenType{
   MINUS,
   CDOT,
   ASTERISK,
+  CARET,
   OPEN_BRACE,
   CLOSE_BRACE,
   OPEN_PAREN,
@@ -27,51 +28,41 @@ enum class TokenType{
   FORWARD_SLASH,
 };
 
-struct Token{
-    TokenType type;
-    std::optional<std::string> value;
+struct Token {
+  TokenType type;
+  std::optional<std::string> value;
 };
 
-class Lexer{
-  private:
-    std::string m_source;
-    size_t m_index = 0;
+class Lexer {
+private:
+  std::string m_source;
+  size_t m_index = 0;
 
-    std::vector<Token> m_tokens;
+  std::vector<Token> m_tokens;
 
-    std::unordered_map<std::string, TokenType> m_map{
-      {"int", TokenType::INTEGRAL},
-      {"lim", TokenType::LIMIT},
-      {"frac", TokenType::FRAC},
-      {"infty", TokenType::INFTY},
-      {"Delta", TokenType::UDELTA},
-      {"cdot", TokenType::CDOT},
+  std::unordered_map<std::string, TokenType> m_map{
+      {"int", TokenType::INTEGRAL}, {"lim", TokenType::LIMIT},
+      {"frac", TokenType::FRAC},    {"infty", TokenType::INFTY},
+      {"Delta", TokenType::UDELTA}, {"cdot", TokenType::CDOT},
       {"sum", TokenType::SUM},
-    };
+  };
 
-    char eat(){
-      return m_source.at(m_index++);
+  char eat() { return m_source.at(m_index++); }
+
+  std::optional<char> peek(size_t offset = 0) {
+    if (m_index + offset >= m_source.length()) {
+      return std::nullopt;
+    } else {
+      return m_source.at(m_index + offset);
     }
+  }
 
-    std::optional<char> peek(size_t offset = 0){
-      if(m_index + offset >= m_source.length()){
-        return std::nullopt;
-      } else{
-        return m_source.at(m_index + offset);
+public:
+  Lexer() = default;
+  Lexer(const std::string &source) : m_source(source) {}
+  ~Lexer() = default;
 
-      }
-    }
-
-
-  public:
-    Lexer() = default;
-    Lexer(const std::string& source) : m_source(source) {}
-    ~Lexer() = default;
-
-    void lex();
-    void printTokens();
-    std::vector<Token> getTokens();
-
-
-
+  void lex();
+  void printTokens();
+  std::vector<Token> getTokens();
 };
