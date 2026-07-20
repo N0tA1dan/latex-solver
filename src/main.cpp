@@ -8,7 +8,7 @@
 
 int main() {
 
-  std::string source = "\\frac{d}{dx}x^2";
+  std::string source = "x^2 + 2x + 3";
 
   Lexer lexer(source);
   lexer.lex();

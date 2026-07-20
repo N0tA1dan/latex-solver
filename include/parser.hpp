@@ -14,7 +14,10 @@ enum class OpType {
   POWER,
 };
 
+enum class SignType { POSITIVE, NEGATIVE };
+
 struct VariableLit {
+  SignType sign;
   Token val;
 };
 

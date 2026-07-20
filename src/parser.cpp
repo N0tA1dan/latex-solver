@@ -69,7 +69,6 @@ std::unique_ptr<ExpressionNode> Parser::ParseAtomic() {
             differential->expr = ParseExpression();
 
             atomic->var = std::move(differential);
-            std::cout << "differential operator found" << std::endl;
           }
         }
       }
