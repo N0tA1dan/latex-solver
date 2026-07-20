@@ -22,6 +22,8 @@ x 2026-06-28 rename parsePrimaryExpression to ParseAtomic
 
 x 2026-07-02 parse for exponents like x^2
 
-2026-07-02 parse for negative expressions like -2 or -x. also add signs for expressions like -(2x)
-
 x 2026-07-17 reserve d/dx within the parser Format should be d/d<var> where var is the variable of differentiation
+
+2026-07-20 add parsing for unary. make a new unaryOpNode. this will account for negative expressions like -x, -x^2, etc
+
+2026-07-20 move parsing differential from parseAtomic() to its own function instead

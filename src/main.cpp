@@ -3,12 +3,11 @@
 #include <bits/time.h>
 #include <iostream>
 #include <stdlib.h>
-#include <time.h>
 #include <unistd.h>
 
 int main() {
 
-  std::string source = "x^2 + 2x + 3";
+  std::string source = "-(2*2)";
 
   Lexer lexer(source);
   lexer.lex();

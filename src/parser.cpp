@@ -158,7 +158,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
       break;
     }
 
-    // handles cases like 2x or 2(expr)
+    // handles cases like 2x, 2(expr), -(expr)
     case TokenType::VARIABLE:
     case TokenType::OPEN_PAREN:
     case TokenType::FRAC: {
