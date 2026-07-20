@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lexer.hpp"
+#include <algorithm>
 #include <memory>
 #include <variant>
 #include <vector>
@@ -30,9 +31,15 @@ struct OpNode {
   std::unique_ptr<ExpressionNode> right;
 };
 
+struct DifferentialNode {
+  Token variable;
+  std::unique_ptr<ExpressionNode> expr;
+};
+
 struct ExpressionNode {
   std::variant<std::unique_ptr<OpNode>, std::unique_ptr<VariableLit>,
-               std::unique_ptr<NumberLit>, std::unique_ptr<ExpressionNode>>
+               std::unique_ptr<NumberLit>, std::unique_ptr<ExpressionNode>,
+               std::unique_ptr<DifferentialNode>>
       var;
 };
 

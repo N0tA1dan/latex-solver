@@ -23,3 +23,5 @@ x 2026-06-28 rename parsePrimaryExpression to ParseAtomic
 x 2026-07-02 parse for exponents like x^2
 
 2026-07-02 parse for negative expressions like -2 or -x
+
+2026-07-17 reserve d/dx within the lexer and give a derivative token back. Format should be d/d<var> where var is the variable of differentiation

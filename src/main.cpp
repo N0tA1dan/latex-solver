@@ -1,13 +1,16 @@
 #include "lexer.hpp"
 #include "parser.hpp"
+#include <bits/time.h>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
 
 int main() {
 
-  std::string source = "2 \\frac{x}{y}";
+  std::string source = "\\frac{d}{dx}x^2";
 
   Lexer lexer(source);
-
   lexer.lex();
   // lexer.printTokens();
 

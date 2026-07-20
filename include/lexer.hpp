@@ -8,6 +8,7 @@
 enum class TokenType {
   FRAC,
   INTEGRAL,
+  DIFFERENTIAL,
   LIMIT,
   SUM,
   INFTY,

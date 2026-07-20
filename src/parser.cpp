@@ -43,25 +43,65 @@ std::unique_ptr<ExpressionNode> Parser::ParseAtomic() {
 
     case TokenType::FRAC: {
       eat(); // eats frac token
-      auto opNode = std::make_unique<OpNode>();
-      opNode->type = OpType::DIVIDE;
-
       TryEat(TokenType::OPEN_BRACE);
-      opNode->left = ParseExpression();
-      TryEat(TokenType::CLOSE_BRACE);
 
-      TryEat(TokenType::OPEN_BRACE);
-      opNode->right = ParseExpression();
-      TryEat(TokenType::CLOSE_BRACE);
+      // attempts to parse d/d<var>
+      if (peek().has_value() && peek().value().type == TokenType::VARIABLE &&
+          peek().value().value == "d") {
 
-      atomic->var = std::move(opNode);
+        TryEat(TokenType::VARIABLE);    // eats d
+        TryEat(TokenType::CLOSE_BRACE); // eats closing brace
+        TryEat(TokenType::OPEN_BRACE);  // eats next open brace
+
+        if (peek().has_value() && peek().value().type == TokenType::VARIABLE &&
+            peek().value().value == "d") {
+
+          TryEat(TokenType::VARIABLE); // eats d
+
+          // we expect a new variable here
+          if (peek().has_value() &&
+              peek().value().type == TokenType::VARIABLE) {
+
+            auto differential = std::make_unique<DifferentialNode>();
+            differential->variable = eat();
+            TryEat(TokenType::CLOSE_BRACE);
+
+            differential->expr = ParseExpression();
+
+            atomic->var = std::move(differential);
+            std::cout << "differential operator found" << std::endl;
+          }
+        }
+      }
+
+      // parses all normal fractions
+      else {
+        auto opNode = std::make_unique<OpNode>();
+        opNode->type = OpType::DIVIDE;
+        opNode->left = ParseExpression();
+        TryEat(TokenType::CLOSE_BRACE);
+
+        TryEat(TokenType::OPEN_BRACE);
+        opNode->right = ParseExpression();
+        TryEat(TokenType::CLOSE_BRACE);
+
+        atomic->var = std::move(opNode);
+      }
+
+      // opNode->left = ParseExpression();
+      // TryEat(TokenType::CLOSE_BRACE);
+
+      // TryEat(TokenType::OPEN_BRACE);
+      // opNode->right = ParseExpression();
+      // TryEat(TokenType::CLOSE_BRACE);
+
+      // atomic->var = std::move(opNode);
 
       break;
     }
 
     default: {
-      std::cerr << "error: unknown error in ParsePrimaryExpression()"
-                << std::endl;
+      std::cerr << "error: unknown error in ParseAtomic()" << std::endl;
       break;
     }
     }

@@ -173,6 +173,10 @@ void Lexer::printTokens() {
       std::cout << "ASTERISK TOKEN" << std::endl;
       break;
 
+    case TokenType::CARET:
+      std::cout << "CARETOKEN" << std::endl;
+      break;
+
     case TokenType::OPEN_BRACE:
       std::cout << "OPEN_BRACE TOKEN" << std::endl;
       break;
