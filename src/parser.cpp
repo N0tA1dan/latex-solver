@@ -1,6 +1,15 @@
 #include "parser.hpp"
 #include "lexer.hpp"
+#include <cstdlib>
 #include <memory>
+
+std::unique_ptr<ExpressionNode> Parser::Expression() {
+  if (m_expression == nullptr) {
+    std::cerr << "error: expression is empty" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  return std::move(m_expression);
+}
 
 void Parser::TryEat(TokenType type) {
   if (peek().has_value() and peek().value().type == type)
@@ -87,15 +96,6 @@ std::unique_ptr<ExpressionNode> Parser::ParseAtomic() {
         atomic->var = std::move(opNode);
       }
 
-      // opNode->left = ParseExpression();
-      // TryEat(TokenType::CLOSE_BRACE);
-
-      // TryEat(TokenType::OPEN_BRACE);
-      // opNode->right = ParseExpression();
-      // TryEat(TokenType::CLOSE_BRACE);
-
-      // atomic->var = std::move(opNode);
-
       break;
     }
 
@@ -131,9 +131,27 @@ std::unique_ptr<ExpressionNode> Parser::ParsePower() {
   return lhsexpr;
 }
 
+std::unique_ptr<ExpressionNode> Parser::ParseUnary() {
+  // parse negative expressions
+  if (peek().has_value() && peek().value().type == TokenType::MINUS) {
+    eat(); // eats - token
+    auto unaryOp = std::make_unique<UnaryOpNode>();
+    unaryOp->type = UnaryOpType::NEGATION;
+    unaryOp->expr = ParseExpression();
+
+    auto expr = std::make_unique<ExpressionNode>();
+
+    expr->var = std::move(unaryOp);
+
+    return expr;
+  }
+
+  return ParsePower();
+}
+
 std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
 
-  auto lhsexpr = ParsePower();
+  auto lhsexpr = ParseUnary();
 
   while (peek().has_value()) {
     switch (peek().value().type) {
@@ -141,7 +159,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     case TokenType::ASTERISK:
     case TokenType::CDOT: {
       eat(); // eat the symbol
-      auto rhsexpr = ParsePower();
+      auto rhsexpr = ParseUnary();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -162,7 +180,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     case TokenType::VARIABLE:
     case TokenType::OPEN_PAREN:
     case TokenType::FRAC: {
-      auto rhsexpr = ParsePower();
+      auto rhsexpr = ParseUnary();
 
       auto opnode = std::make_unique<OpNode>();
 
@@ -182,7 +200,7 @@ std::unique_ptr<ExpressionNode> Parser::ParseFactor() {
     // handles x/2
     case TokenType::FORWARD_SLASH: {
       eat(); // eat / symbol
-      auto rhsexpr = ParsePower();
+      auto rhsexpr = ParseUnary();
 
       auto opnode = std::make_unique<OpNode>();
 

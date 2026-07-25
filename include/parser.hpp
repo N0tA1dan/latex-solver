@@ -14,10 +14,9 @@ enum class OpType {
   POWER,
 };
 
-enum class SignType { POSITIVE, NEGATIVE };
+enum class UnaryOpType { NEGATION };
 
 struct VariableLit {
-  SignType sign;
   Token val;
 };
 
@@ -26,6 +25,12 @@ struct NumberLit {
 };
 
 struct ExpressionNode;
+
+struct UnaryOpNode {
+  UnaryOpType type;
+
+  std::unique_ptr<ExpressionNode> expr;
+};
 
 struct OpNode {
   OpType type;
@@ -40,8 +45,9 @@ struct DifferentialNode {
 };
 
 struct ExpressionNode {
-  std::variant<std::unique_ptr<OpNode>, std::unique_ptr<VariableLit>,
-               std::unique_ptr<NumberLit>, std::unique_ptr<ExpressionNode>,
+  std::variant<std::unique_ptr<OpNode>, std::unique_ptr<UnaryOpNode>,
+               std::unique_ptr<VariableLit>, std::unique_ptr<NumberLit>,
+               std::unique_ptr<ExpressionNode>,
                std::unique_ptr<DifferentialNode>>
       var;
 };
@@ -70,10 +76,12 @@ public:
 
   ~Parser() = default;
 
+  std::unique_ptr<ExpressionNode> Expression();
   void TryEat(TokenType type);
 
   std::unique_ptr<ExpressionNode> ParseAtomic();
   std::unique_ptr<ExpressionNode> ParsePower();
+  std::unique_ptr<ExpressionNode> ParseUnary();
   std::unique_ptr<ExpressionNode> ParseFactor();
   std::unique_ptr<ExpressionNode> ParseTerm();
   std::unique_ptr<ExpressionNode> ParseExpression();
