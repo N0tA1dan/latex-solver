@@ -12,7 +12,7 @@ x 2026-06-08 add tryeat function helper in parser to try to eat a token
 
 x 2026-06-09 fix reused code in switch statements within parseTerm
 
-2026-06-09 add parse frac function or figure out how to properly parse it
+x 2026-06-09 add parse frac function or figure out how to properly parse it
 
 x 2026-06-23 fix parseTerm and make it a while loop instead of if statement
 
@@ -24,7 +24,7 @@ x 2026-07-02 parse for exponents like x^2
 
 x 2026-07-17 reserve d/dx within the parser Format should be d/d<var> where var is the variable of differentiation
 
-2026-07-20 add parsing for unary. make a new unaryOpNode. this will account for negative expressions like -x, -x^2, etc
+x 2026-07-20 add parsing for unary. make a new unaryOpNode. this will account for negative expressions like -x, -x^2, etc
 
 2026-07-20 move parsing differential from parseAtomic()
 

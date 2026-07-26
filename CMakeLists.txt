@@ -8,6 +8,7 @@ add_executable(
   src/main.cpp
   src/lexer.cpp
   src/parser.cpp
+  src/solver.cpp
 )
 
 target_include_directories(solver PRIVATE include)

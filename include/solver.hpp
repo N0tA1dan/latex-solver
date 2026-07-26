@@ -9,4 +9,7 @@ private:
 public:
   Solver(std::unique_ptr<ExpressionNode> expr)
       : m_expression(std::move(expr)) {}
+
+  void solveDifferential();
+  void solve();
 };
