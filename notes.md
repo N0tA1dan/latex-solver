@@ -16,3 +16,9 @@ would strictly return its derivative, not solving anything or evaluating
 ## 07/19/2026
 
 the parsing for the differential operator is a bit janky. itll reserve ALL fractions with "d" as the numerator. definitely should fix that
+
+## 07/31/2026
+
+For solving polynomails, separate expressions by terms into a vector. then depending on the vector size and highest degree, determine what formula to use. Eg: if the highest degree is 2, use the quadratic formula
+
+could potentially determine what formula to use by keeping a tracker of the degree of the polynomial

@@ -29,3 +29,4 @@ x 2026-07-20 add parsing for unary. make a new unaryOpNode. this will account fo
 2026-07-20 move parsing differential from parseAtomic()
 
 2026-07-24 actually work on the solver. fix parser stuff later.
+
