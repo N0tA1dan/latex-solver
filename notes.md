@@ -37,3 +37,5 @@ x^2 + 3x + 1
 map : {2: 1, 1: 3, 0: 1}
 
 Like i said i wont be using ai to generate code, this was only for the actual design of the solver because i was genuinely stuck on the stage of making it
+
+The core idea: a function that takes a tree node and returns a map. It calls itself on its children. Nothing is stored anywhere.
