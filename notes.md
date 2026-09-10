@@ -39,3 +39,17 @@ map : {2: 1, 1: 3, 0: 1}
 Like i said i wont be using ai to generate code, this was only for the actual design of the solver because i was genuinely stuck on the stage of making it
 
 The core idea: a function that takes a tree node and returns a map. It calls itself on its children. Nothing is stored anywhere.
+
+basically each node will return a map of exponents -> coefficient. so it will simplify the polynomial. The functions will combine the maps, for example we will have a addMap, subMap, mulMap, divMap, and probably more. this will be able to give us the ability to combine maps to simplify the expression. For example
+
+x + 2 + 1
+
+We will get the following maps:
+
+{1: 1}
+{0: 2}
+{0: 1}
+
+(Variables have a exponent of 1 and constants have an exponent of 0)
+
+something i want to check out for other special functions is newtons method for root finding
